@@ -1,0 +1,434 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+
+        <style>
+            div#content {
+                 position: fixed;
+                    bottom: 0px;
+                    left: 25%;
+
+                    width: 50%;
+                    min-width: 400px;
+                    height: -webkit-calc(100% - 105px);
+                    
+                    background-color: cornflowerblue;
+            }
+            div#sidebar {
+                width: 35%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                background-color: cornsilk;
+                position: absolute
+            }
+            .name {
+                width: 75%;
+                height: 5%;
+                margin-left: 20px;
+                margin-bottom: 10px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 18; 
+            }
+            .username {
+                width: 75%;
+                height: 3%;
+                margin-left: 20px;
+                margin-bottom: 10px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 16;
+            }
+            .email {
+                width: 75%;
+                height: 3%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 16;
+            }
+            .street {
+                width: 75%;
+                height: 20%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .suite {
+                width: 75%;
+                height: 20%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .city {
+                width: 75%;
+                height: 20%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .zipcode {
+                width: 75%;
+                height: 20%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .phone {
+                width: 75%;
+                height: 3%;
+                margin-left: 20px;
+                margin-bottom: 10px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 12;
+            }
+            .website {
+                width: 75%;
+                height: 3%;
+                margin-left: 20px;
+                margin-bottom: 10px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 16;
+            }
+            .cname {
+                width: 75%;
+                height: 28%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .catchPhrase {
+                width: 75%;
+                height: 28%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .bs {
+                width: 75%;
+                height: 28%;
+                margin-left: 20px;
+                margin-bottom: 5px;
+                background-color: aquamarine;
+                display: flex;
+                font-size: 14;
+            }
+            .address {
+                width: 100%;
+                height: 15%;
+                background-color:aqua;
+            }
+            .company {
+                width: 100%;
+                height: 12%;
+                background-color: aqua;
+            }
+            div#posts {
+                width: 100%;
+                height: 50%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                background-color:black;
+                
+                overflow-x: scroll;
+            }
+            div#photos {
+                width: 100%;
+                height: 50%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                background-color:black;
+                
+                overflow-x: scroll;
+            }
+            div#po-container {
+                position: absolute;
+                width: 100%;
+            }
+            table.post {
+                width: -webkit-calc(100% - 30px);
+                min-height: 50px;
+
+                margin: 15px;
+                padding: 5px;
+                border-spacing: 5px;
+
+                background-color: white;
+            }
+
+            table, td {
+                border: 1px solid gray;
+                border-radius: 5px;
+            }
+            .margin {
+                margin-bottom: 10px;
+            }
+        </style>
+            
+        <script>
+            var root = 'https://jsonplaceholder.typicode.com';
+            var users;
+            var posts;
+            var photos;
+            var postnumber;
+            var usernumber;
+            
+            $(document).ready(function(){
+                start();
+                loadPost();
+            });
+            
+             $(window).on('resize', function(){
+                var win = $(this);
+                if (win.width() < 800) {
+                    $('#header').css({
+                        left: '-webkit-calc(50% - 200px)'
+                    });
+                    
+                    $('#main').css({
+                        left: '-webkit-calc(50% - 200px)'
+                    });
+                }
+                else {
+                    $('#header').css({
+                        left: '25%'
+                    });
+                    
+                    $('#main').css({
+                        left: '25%'
+                    });
+                }
+            });
+            
+            function start() {
+                $.ajax({
+                    url: root + '/users',
+                    method: 'GET'
+                }).then(function(data){
+                    users = data;
+                    //usernumber = users.id;
+                    postnumber = users[0].id * 10;
+                    console.log(postnumber);
+                    
+                    var name = document.createElement("div");
+                    var username = document.createElement("div");
+                    var email = document.createElement("div");
+                    var address = document.createElement("div");
+                    var street = document.createElement("div");
+                    var suite = document.createElement("div");
+                    var city = document.createElement("div");
+                    var zipcode = document.createElement("div");
+                    var phone = document.createElement("div");
+                    var website = document.createElement("div");
+                    var company = document.createElement("div");
+                    var cname = document.createElement("div");
+                    var catchPhrase = document.createElement("div");
+                    var bs = document.createElement("div");
+                    
+                    $(name).addClass("name");
+                    $(username).addClass("username");
+                    $(email).addClass("email");
+                    $(address).addClass("address");
+                    $(street).addClass("street");
+                    $(suite).addClass("suite");
+                    $(city).addClass("city");
+                    $(zipcode).addClass("zipcode");
+                    $(phone).addClass("phone");
+                    $(website).addClass("website");
+                    $(company).addClass("company");
+                    $(cname).addClass("cname");
+                    $(catchPhrase).addClass("catchPhrase");
+                    $(bs).addClass("bs");
+                    
+                    $(name).html(users[0].name);
+                    $(username).html(users[0].username);
+                    $(email).html(users[0].email);
+                    $(street).html(users[0].address.street);
+                    $(suite).html(users[0].address.suite);
+                    $(city).html(users[0].address.city);
+                    $(zipcode).html(users[0].address.zipcode);
+                    $(phone).html(users[0].phone);
+                    $(website).html(users[0].website);
+                    $(cname).html(users[0].company.name);
+                $(catchPhrase).html(users[0].company.catchPhrase);
+                    $(bs).html(users[0].company.bs);
+                    
+                    $("#sidebar").append(name);
+                    $("#sidebar").append(username);
+                    $("#sidebar").append(email);
+                    $(address).append(street);
+                    $(address).append(suite);
+                    $(address).append(city);
+                    $(address).append(zipcode);
+                    $("#sidebar").append(address);
+                    $("#sidebar").append(phone);
+                    $("#sidebar").append(website);
+                    $(company).append(cname);
+                    $(company).append(catchPhrase);
+                    $(company).append(bs);
+                    $("#sidebar").append(company);
+                 
+                });
+            }
+                function loadPost() {
+                    $.ajax({
+                    url: root + '/posts',
+                    method: 'GET'
+                    }).then(function(data){
+                        posts = data;
+                        
+                        var post = posts[postnumber - 1];
+                        var user = users[post.userid - 1];
+                        
+                         var posttb = document.createElement("table");
+                        //var pic = document.createElement("td");
+                        var username = document.createElement("td");
+                        var title = document.createElement("td");
+                        var content = document.createElement("td");
+                        var row1 = document.createElement("tr");
+                        var row2 = document.createElement("tr");
+                        var row3 = document.createElement("tr");
+                        
+                        $(posttb).addClass("post");
+                        //$(pic).addClass("userpic");
+                        $(username).addClass("username");
+                        $(title).addClass("title");
+                        $(content).addClass("content");
+
+                        $(username).html(users[0].username);
+                        $(title).html(post.title);
+                        $(content).html(post.body);
+                        
+                        $(row1).append(username);
+                        $(row2).append(title);
+                        $(row3).append(content);
+                        console.log(row1);
+
+                        $(posttb).append(row1);
+                        $(posttb).append(row2);
+                        $(posttb).append(row3);
+                        
+                        var tempdiv = document.createElement("div");
+                        var loadBtn = document.createElement("button");
+                        
+                        $(loadBtn).text("Load More");
+                        $(tempdiv).attr("id", "endofpage");
+                        $(loadBtn).attr("id", "loadbtn");
+                        
+                        $(tempdiv).append(loadBtn);
+                        $('#loadbtn').click(function(){
+                            loadMorePosts();
+                        });
+                        console.log(posttb);
+                        $("#po-container").append(posttb);
+                        $("#po-container").append(tempdiv);
+                        
+                    });
+                }
+                
+        /*       function loadMorePosts() {
+                    $("#endofpage").remove();
+                    $("#photos").remove();
+                    
+                    for(var i = 0 ; i < 9; i++) {
+                    var post = posts[postnumber - 2];
+                    var user = users[post.userId - 2];
+                    //console.log('post ' + postnumber + user.name);
+                    
+                    var posttb = document.createElement("table");
+                    //var pic = document.createElement("td");
+                    var username = document.createElement("td");
+                    var title = document.createElement("td");
+                    var content = document.createElement("td");
+                    var row1 = document.createElement("tr");
+                    var row2 = document.createElement("tr");
+                    var row3 = document.createElement("tr");
+
+                    $(posttb).addClass("post");
+                    //$(pic).addClass("userpic");
+                    $(username).addClass("username");
+                    $(title).addClass("title");
+                    $(content).addClass("content");
+                    
+                    $(username).html(user.username);
+                    $(title).html(post.title);
+                    $(content).html(post.body);
+                    
+                    //$(pic).attr("rowspan", 3);
+                    
+                    //$(row1).append(pic);
+                    $(row1).append(username);
+                    $(row2).append(title);
+                    $(row3).append(content);
+                    console.log(row1);
+                    
+                    $(posttb).append(row1);
+                    $(posttb).append(row2);
+                    $(posttb).append(row3);
+                    
+                    console.log(posttb);
+                    $("#po-container").append(posttb);
+                    
+                    postnumber--;
+                }
+                
+            }*/
+            
+        </script>
+    </head>
+
+    <body>
+        <div id="header">
+            <div id="logo"></div>
+            <div id="navbar">
+                <a href="home.html">
+                    <li class="navitem" id="homebtn"></li>
+                </a>
+                <a href="photos.html">
+                    <li class="navitem" id="photobtn"></li>
+                </a>
+                <a href="profiles.html">
+                    <li class="navitem" id="profbtn"></li>
+                </a>
+            </div>
+        </div>
+        
+        <div id="content">
+            <div id="sidebar"></div>
+            <div id="posts">
+                <div id="po-container"></div>
+            </div>
+                
+            <div id="photos">
+                <div id="ph-container"></div>
+            </div>
+                
+        </div>
+            
+        
+    
+    </body>
+
+</html>

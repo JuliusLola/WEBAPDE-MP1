@@ -1,0 +1,201 @@
+<html>
+    
+    <head>
+        
+        <link rel="icon" href="icon.png">
+        
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="photos.css" />
+        
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        
+        <script>
+            var key;
+            var usernumber;
+            
+            function start() {
+                
+                key = window.location.search;
+                
+                if(key.trim() != '') {
+                    key = key.split('=');
+                    key = key[1];
+                    
+                    $.ajax({
+                        url: root + '/users?id=' + key,
+                        method: 'GET'
+                    }).then(function(data) {
+                        users = data;
+                        user = users[0];
+                        document.title = user.name;
+
+                        $.ajax({
+                            url: root + '/posts?userId=' + key,
+                            method: 'GET'
+                        }).then(function(data) {
+                            posts = data;
+                            
+                            $.ajax({
+                                url: root + '/albums?userId=' + key,
+                                method: 'GET'
+                            }).then(function(data) {
+                                albums = data;
+                                
+                                $.ajax({
+                                    url: root + '/photos',
+                                    method: 'GET'
+                                }).then(function(data) {
+                                    photos = data;
+                                    displayProfile();
+                                });
+                            });
+                        });
+                    });
+                } else {
+                    document.title = 'Profiles';
+                    $.ajax({
+                        url: root + '/users',
+                        method: 'GET'
+                        }).then(function(data) {
+                            users = data;
+                            //console.log(users);
+                            loadProfiles();
+                    });
+                }
+                
+            }
+            
+            function displayProfile() {
+                
+                //console.log(posts);
+                //console.log(user);
+                
+                $('#main').css({
+                    'overflow-y': 'hidden',
+                    'background-color': 'skyblue'
+                });
+            
+                $('#maincontainer').css({
+                    'position': 'fixed',
+                    'bottom': '0px',
+                    'width': '100%',
+                    'height': '-webkit-calc(45% - 80px)',
+                    'background-color': '#316bad'
+                });
+                
+                sizeFunction();
+                
+                var pcon = document.createElement("div");
+                var ucon = document.createElement("div");
+                var acon = document.createElement("div");
+                
+                $(ucon).attr('id', "usercontainer");
+                $(pcon).attr('id', "postcontainer");
+                $(acon).attr('id', "albumcontainer");
+                
+                $(pcon).addClass("streamcontainer");
+                $(acon).addClass("streamcontainer");
+                
+                var ptext = document.createElement("span");
+                var atext = document.createElement("span");
+                $(ptext).text('Posts');
+                $(atext).text('Albums');
+                
+                loadProfiles();
+                $(ucon).append($('.user'));
+                $("#main").append(ucon);
+                
+                $.ajax({
+                        url: root + '/users',
+                        method: 'GET'
+                    }).then(function(data) {
+                        users = data;
+
+                        loadPosts();
+                        $(pcon).append($('.post'));
+                        $("#maincontainer").append(pcon);
+
+                        findAlbum();
+                        $(acon).append($('#photocontainer'));
+                        $('#maincontainer').append(acon);
+
+                        if($("#endofpage").length) {
+                            $("#endofpage").remove();
+                        }
+                    });
+                
+            }
+            
+        </script>
+        <style>
+            
+            div#usercontainer {
+                width: 100%;
+                height: 50%;
+                position: absolute;
+            }
+            
+            div.streamcontainer {
+                width: 50%;
+                height: 100%;
+                position: absolute;
+                bottom: 0px;
+                
+                overflow-y: scroll;
+                text-align: center;
+                font-size: 18px;
+            }
+            
+            div#postcontainer {
+                left: 0px;
+            }
+            
+            div#albumcontainer {
+                right: 0px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        
+        <div id="header">
+            <div id="logo"></div>
+            <div id="navbar">
+                <li class="navitem">
+                    <a class="navlink" href="home.html">
+                        <img class="navimg" id="homebtn" src="spritesheet.png" />
+                        <span class="navtxt" id="hometxt">Home</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="photos.html">
+                        <img class="navimg" id="photobtn" src="spritesheet.png" />
+                        <span class="navtxt" id="phototxt">Photos</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="profiles.html">
+                        <img class="navimg" id="profbtn" src="spritesheet.png" />
+                        <span class="navtxt" id="proftxt">Profiles</span>
+                    </a>
+                </li>
+            </div>
+            <div id="search">
+                <input type="text" id="searchbar" placeholder="Search..." />
+                <button id="searchbtn"></button>
+            </div>
+        </div>
+
+        <div id="main">
+            <div id="maincontainer">
+            </div>
+        </div>
+        
+    </body>
+    
+    <script src="script.js"></script>
+    <script src="photos_script.js"></script>
+    
+</html>

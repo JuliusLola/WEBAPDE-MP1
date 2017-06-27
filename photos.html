@@ -1,0 +1,109 @@
+<html>
+    <head>
+        
+        <link rel="icon" href="icon.png">
+        
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="photos.css" />
+        
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        
+        <script>
+            
+            function start() {
+                $.ajax({
+                    url: root + '/photos',
+                    method: 'GET'
+                }).then(function(data) {
+                    //for debugging
+                    //console.log(data);
+                    photos = data;
+                    photonumber = photos.length;
+                    originalPhotoNum = photonumber;
+                    //console.log(photos);
+                    
+                    $.ajax({
+                        url: root + '/albums',
+                        method: 'GET'
+                    }).then(function(data) {
+                        albums = data;
+                        albumnumber = albums.length;
+                        originalAlbumNum = albumnumber;
+                        //console.log(albums);
+                        
+                         $.ajax({
+                             url: root + '/users',
+                             method: 'GET'
+                         }).then(function(data) {
+                             users = data;
+                             //console.log(albums);
+                             loadPhotos('');
+                        });
+                    });
+                });
+            }
+            
+        </script>
+    </head>
+    
+    <body>
+        <div id="header">
+            <div id="logo"></div>
+            <div id="navbar">
+                <li class="navitem">
+                    <a class="navlink" href="home.html">
+                        <img class="navimg" id="homebtn" src="spritesheet.png" />
+                        <span class="navtxt" id="hometxt">Home</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="photos.html">
+                        <img class="navimg" id="photobtn" src="spritesheet.png" />
+                        <span class="navtxt" id="phototxt">Photos</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="profiles.html">
+                        <img class="navimg" id="profbtn" src="spritesheet.png" />
+                        <span class="navtxt" id="proftxt">Profiles</span>
+                    </a>
+                </li>
+            </div>
+            <div id="search">
+                <input type="text" id="searchbar" placeholder="Search..." />
+                <button id="searchbtn"></button>
+            </div>
+        </div>
+        
+        <div id="main">
+            <div id="photonav">
+                <button class="filterbtn" id="photofilter">Photo Stream</button>
+                <button class="filterbtn" id="albumfilter">Album Stream</button>
+            </div>            
+            <div id="maincontainer">
+                
+            </div>
+        </div>
+            
+        <div id="myModal" class="modal">
+            <span class="close cursor" onclick="closeModal()">&times;</span>
+            <div class="modal-content">
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+                <div class="caption-container">
+
+                </div>    
+
+            </div>
+        </div>
+    
+    </body>
+        
+    <script src="script.js"></script>
+    <script src="photos_script.js"></script>
+
+</html>

@@ -1,0 +1,113 @@
+<html>
+    <head>
+        
+        <link rel="icon" href="icon.png">
+        
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="photos.css" />
+        
+		<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        
+        <script>
+            
+            function start() {
+                $.ajax({
+                    url: root + '/photos',
+                    method: 'GET'
+                }).then(function(data) {
+                    photos = data;
+                    
+                    $.ajax({
+                        url: root + '/albums',
+                        method: 'GET'
+                    }).then(function(data) {
+                        albums = data;
+                        
+                        $.ajax({
+                            url: root + '/users',
+                            method: 'GET'
+                        }).then(function(data) {
+                            users = data;
+                            
+                            loadPhotos('');
+                        });
+                    });
+                });
+            }
+            
+        </script>
+    </head>
+    
+    <body>
+        <div id="header">
+            <div id="logo"></div>
+            <div id="navbar">
+                <li class="navitem">
+                    <a class="navlink" href="home.html">
+                        <img class="navimg" id="homebtn" src="spritesheet.png" />
+                        <span class="navtxt" id="hometxt">Home</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="photos.html">
+                        <img class="navimg" id="photobtn" src="spritesheet.png" />
+                        <span class="navtxt" id="phototxt">Photos</span>
+                    </a>
+                </li>
+                
+                <li class="navitem">
+                    <a class="navlink" href="profiles.html">
+                        <img class="navimg" id="profbtn" src="spritesheet.png" />
+                        <span class="navtxt" id="proftxt">Profiles</span>
+                    </a>
+                </li>
+            </div>
+            <div id="search">
+                <input type="text" id="searchbar" placeholder="Search..." />
+                <button id="searchbtn"></button>
+            </div>
+        </div>
+        
+        <div id="main">
+            <div id="maincontainer">
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="1" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="1" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="1" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="1" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="1" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+                <div class="photos">
+                    <img class="img" height="150" width="150" id="2" src='pic.png'/>
+                </div>
+            </div>
+        </div>
+        
+        <script src="script.js"></script>
+    
+    </body>
+</html>
